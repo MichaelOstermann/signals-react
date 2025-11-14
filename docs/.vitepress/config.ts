@@ -2,9 +2,9 @@ import { defineConfig } from "vitepress"
 import { groupIconMdPlugin, groupIconVitePlugin } from "vitepress-plugin-group-icons"
 
 export default defineConfig({
-    base: "/NAME/",
-    description: "DESC",
-    title: "NAME",
+    base: "/signals-react/",
+    description: "React integration for signals.",
+    title: "signals-react",
     markdown: {
         theme: {
             dark: "catppuccin-macchiato",
@@ -25,7 +25,7 @@ export default defineConfig({
             provider: "local",
         },
         socialLinks: [
-            { icon: "github", link: "https://github.com/MichaelOstermann/NAME" },
+            { icon: "github", link: "https://github.com/MichaelOstermann/signals-react" },
         ],
     },
     vite: {

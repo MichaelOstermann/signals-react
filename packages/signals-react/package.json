@@ -1,17 +1,17 @@
 {
-    "name": "@monstermann/NAME",
+    "name": "@monstermann/signals-react",
     "type": "module",
     "version": "0.0.0",
-    "description": "DESC",
+    "description": "React integration for signals.",
     "author": "Michael Ostermann <michaelostermann@me.com>",
     "license": "MIT",
-    "homepage": "https://MichaelOstermann.github.io/NAME",
+    "homepage": "https://MichaelOstermann.github.io/signals-react",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/MichaelOstermann/NAME.git"
+        "url": "git+https://github.com/MichaelOstermann/signals-react.git"
     },
     "bugs": {
-        "url": "https://github.com/MichaelOstermann/NAME/issues"
+        "url": "https://github.com/MichaelOstermann/signals-react/issues"
     },
     "keywords": [],
     "sideEffects": false,
@@ -31,5 +31,11 @@
         "bundle": "tsdown",
         "release": "bun publish --access public"
     },
-    "dependencies": {}
+    "dependencies": {
+        "@monstermann/signals": "^0.0.0",
+        "react": "^19.2.0"
+    },
+    "devDependencies": {
+        "@types/react": "^19.2.4"
+    }
 }

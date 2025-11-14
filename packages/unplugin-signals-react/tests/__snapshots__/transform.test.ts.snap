@@ -1,0 +1,135 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`transform > Should ignore already decorated signals 1`] = `
+"import { useSignal as useS } from "@monstermann/signals-react"
+export const Component = () => {
+    const foo = useS($foo)
+    return null
+}"
+`;
+
+exports[`transform > Should ignore everything else 1`] = `
+"export const component = () => {
+    const foo = $foo()
+    return foo
+}"
+`;
+
+exports[`transform > Should ignore non-reads 1`] = `
+"export const Component = () => {
+    const foo = $foo(100)
+    return null
+}"
+`;
+
+exports[`transform > Should reuse import 1`] = `
+"import { useSignal as useS } from "@monstermann/signals-react"
+export const Component = () => {
+    const foo = useS($foo)
+    return null
+}"
+`;
+
+exports[`transform > Should transform JSX attributes 1`] = `
+"import { useSignal } from "@monstermann/signals-react";
+export const Component = () => {
+    return (
+        <div style={useSignal($style)} />
+    )
+}"
+`;
+
+exports[`transform > Should transform JSX container expressions 1`] = `
+"import { useSignal } from "@monstermann/signals-react";
+export const Component = () => {
+    return (
+        <div>
+            {useSignal($text)}
+        </div>
+    )
+}"
+`;
+
+exports[`transform > Should transform JSX spread attributes 1`] = `
+"import { useSignal } from "@monstermann/signals-react";
+export const Component = () => {
+    return (
+        <div {...useSignal($style)} />
+    )
+}"
+`;
+
+exports[`transform > Should transform complex expressions 1`] = `
+"import { useSignal } from "@monstermann/signals-react";
+export const useHook = () => {
+    const a = useSignal(() => ($a() + $b()))
+    const b = useSignal(() => ({ b: $b() }))
+    const c = useSignal(() => ([$c()]))
+    const d = useSignal(() => (util($d())))
+    return null
+}"
+`;
+
+exports[`transform > Should transform const Component = () => {} 1`] = `
+"import { useSignal } from "@monstermann/signals-react";
+export const Component = () => {
+    const foo = useSignal($foo)
+    return null
+}"
+`;
+
+exports[`transform > Should transform const Component = function() {} 1`] = `
+"import { useSignal } from "@monstermann/signals-react";
+export const Component = function() {
+    const foo = useSignal($foo)
+    return null
+}"
+`;
+
+exports[`transform > Should transform const useHook = () => {} 1`] = `
+"import { useSignal } from "@monstermann/signals-react";
+export const useHook = () => {
+    const foo = useSignal($foo)
+    return null
+}"
+`;
+
+exports[`transform > Should transform const useHook = function() {} 1`] = `
+"import { useSignal } from "@monstermann/signals-react";
+export const useHook = function() {
+    const foo = useSignal($foo)
+    return null
+}"
+`;
+
+exports[`transform > Should transform function Component() {} 1`] = `
+"import { useSignal } from "@monstermann/signals-react";
+export function Component() {
+    const foo = useSignal($foo)
+    return null
+}"
+`;
+
+exports[`transform > Should transform function useHook() {} 1`] = `
+"import { useSignal } from "@monstermann/signals-react";
+export function useHook() {
+    const foo = useSignal($foo)
+    return null
+}"
+`;
+
+exports[`transform > Should transform functions containing jsx 1`] = `
+"import { useSignal } from "@monstermann/signals-react";
+export const component = () => {
+    const foo = useSignal($foo)
+    return <div />
+}"
+`;
+
+exports[`transform > Should transform nested call expressions 1`] = `
+"import { useSignal } from "@monstermann/signals-react";
+export const useHook = () => {
+    const foo = useSignal(bar.$baz)
+    return null
+}"
+`;

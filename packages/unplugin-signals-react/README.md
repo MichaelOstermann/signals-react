@@ -1,8 +1,8 @@
 <div align="center">
 
-<h1>signals-react</h1>
+<h1>unplugin-signals-react</h1>
 
-**React integration for signals.**
+**Transformer plugin for signals-react.**
 
 [Documentation](https://MichaelOstermann.github.io/signals-react)
 
