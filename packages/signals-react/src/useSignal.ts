@@ -22,6 +22,7 @@ export function useSignal<T>(value: UseSignalValue<T>): T {
             if (!isFirst) cb()
             isFirst = false
         })
+        effect.run()
         return effect.dispose.bind(effect)
     }, [signal])
 
