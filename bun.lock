@@ -19,7 +19,7 @@
       "name": "@monstermann/signals-react",
       "version": "0.0.1",
       "dependencies": {
-        "@monstermann/signals": "^0.0.0",
+        "@monstermann/signals": "^0.1.0",
         "react": "^19.2.0",
       },
       "devDependencies": {
@@ -270,7 +270,7 @@
 
     "@monstermann/meta": ["@monstermann/meta@0.1.0", "", {}, "sha512-RUrZdxKDC+//hfJIDeS1wztPJADuMzIy6nG0NjuvGyGZoI9kQOdCbWYIetpiXTRLNgfwmTY25jcEWqim3Oowhg=="],
 
-    "@monstermann/signals": ["@monstermann/signals@0.0.0", "", { "dependencies": { "@monstermann/dll": "^0.0.0", "@monstermann/dsp": "^0.2.1", "@monstermann/meta": "^0.1.0" } }, "sha512-gjmuKZ5alJ2dqXlF++T1VBwxn1iGFYphTW66W6nyOBZkBRVu1OiJj43Y8VRWQ9kJVTPfKGHJxsFmhMXBTL49xA=="],
+    "@monstermann/signals": ["@monstermann/signals@0.1.0", "", { "dependencies": { "@monstermann/dll": "^0.0.0", "@monstermann/dsp": "^0.2.1", "@monstermann/meta": "^0.1.0" } }, "sha512-j18esP81KQpD+BW+MJgB2Ad/hCqnRQRXcoJ40FrUXoEr0pdBJV48+V/M49JYcxVZedHWzQAJCIWPC8OWGWEouQ=="],
 
     "@monstermann/signals-react": ["@monstermann/signals-react@workspace:packages/signals-react"],
 
