@@ -109,7 +109,7 @@
         "@monstermann/signals-react": "workspace:*",
         "magic-string": "^0.30.17",
         "oxc-parser": "^0.101.0",
-        "oxc-walker": "^0.3.0",
+        "oxc-walker": "^0.6.0",
         "unplugin": "^2.3.4"
     },
     "devDependencies": {
