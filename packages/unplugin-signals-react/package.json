@@ -1,7 +1,7 @@
 {
     "name": "@monstermann/unplugin-signals-react",
     "type": "module",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Transformer plugin for signals-react.",
     "author": "Michael Ostermann <michaelostermann@me.com>",
     "license": "MIT",
