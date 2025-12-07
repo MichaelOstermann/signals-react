@@ -32,7 +32,7 @@
         "release": "bun publish --access public"
     },
     "dependencies": {
-        "@monstermann/signals": "^0.1.1",
+        "@monstermann/signals": "^0.1.2",
         "react": "^19.2.0"
     },
     "devDependencies": {
