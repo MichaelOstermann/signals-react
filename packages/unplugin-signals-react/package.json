@@ -108,7 +108,7 @@
     "dependencies": {
         "@monstermann/signals-react": "workspace:*",
         "magic-string": "^0.30.17",
-        "oxc-parser": "^0.76.0",
+        "oxc-parser": "^0.101.0",
         "oxc-walker": "^0.3.0",
         "unplugin": "^2.3.4"
     },
