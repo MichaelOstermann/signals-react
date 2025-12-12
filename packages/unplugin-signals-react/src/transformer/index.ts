@@ -102,16 +102,20 @@ export function transform(code: string, filename: string): MagicString {
             }
 
             // $foo()
-            // foo.$bar()
+            // foo.$bar, foo.$bar()
             else if (
                 !skip
-                && node.type === "CallExpression"
-                && node.arguments.length === 0
-                && ((node.callee.type === "Identifier"
-                    && node.callee.name.startsWith("$"))
-                || (node.callee.type === "MemberExpression"
-                    && node.callee.property.type === "Identifier"
-                    && node.callee.property.name.startsWith("$")))
+                && (
+                    // $foo()
+                    (node.type === "CallExpression"
+                        && node.arguments.length === 0
+                        && node.callee.type === "Identifier"
+                        && node.callee.name.startsWith("$"))
+                    // foo.$bar, foo.$bar()
+                    || (node.type === "MemberExpression"
+                        && node.property.type === "Identifier"
+                        && node.property.name.startsWith("$"))
+                )
             ) {
                 // The nearest function
                 const scope = scopeStack.at(-1)
