@@ -3,17 +3,20 @@ import MagicString from "magic-string"
 import { parseAndWalk } from "oxc-walker"
 import { isReactIdentifier } from "./isReactIdentifier"
 
+interface Scope {
+    expressions: Set<JSXExpression | Expression>
+    fn: Function | ArrowFunctionExpression
+    react: boolean
+}
+
 export function transform(code: string, filename: string): MagicString {
     const ms = new MagicString(code, { filename })
     const ids = new Set<string>()
     let useSignal = ""
     let skip = 0
     const parents: Node[] = []
-    const scopes: {
-        expressions: Set<JSXExpression | Expression>
-        fn: Function | ArrowFunctionExpression
-        react: boolean
-    }[] = []
+    const scopes: Scope[] = []
+    const scopeStack: Scope[] = []
 
     function generateId(base: string): string {
         let count = 0
@@ -47,7 +50,9 @@ export function transform(code: string, filename: string): MagicString {
                     && node.id.type === "Identifier"
                     && isReactIdentifier(node.id.name)
                 ) {
-                    scopes.push({ expressions: new Set(), fn: node, react: true })
+                    const scope: Scope = { expressions: new Set(), fn: node, react: true }
+                    scopes.push(scope)
+                    scopeStack.push(scope)
                 }
 
                 // const Component = function() {}
@@ -57,16 +62,20 @@ export function transform(code: string, filename: string): MagicString {
                     && parent.id.type === "Identifier"
                     && isReactIdentifier(parent.id.name)
                 ) {
-                    scopes.push({ expressions: new Set(), fn: node, react: true })
+                    const scope: Scope = { expressions: new Set(), fn: node, react: true }
+                    scopes.push(scope)
+                    scopeStack.push(scope)
                 }
 
                 else {
-                    scopes.push({ expressions: new Set(), fn: node, react: false })
+                    const scope: Scope = { expressions: new Set(), fn: node, react: false }
+                    scopes.push(scope)
+                    scopeStack.push(scope)
                 }
             }
 
             else if (node.type.startsWith("JSX")) {
-                const scope = scopes.at(-1)
+                const scope = scopeStack.at(-1)
                 if (scope) scope.react = true
             }
 
@@ -105,7 +114,7 @@ export function transform(code: string, filename: string): MagicString {
                     && node.callee.property.name.startsWith("$")))
             ) {
                 // The nearest function
-                const scope = scopes.at(-1)
+                const scope = scopeStack.at(-1)
                 // Try to find eg. the nearest variable such as const foo = ...,
                 // we need to wrap the right side with const foo = useSignal(...)
                 const target = findParent(parents, node => node.type === "VariableDeclaration" || node.type === "JSXExpressionContainer" || node.type === "JSXSpreadAttribute")
@@ -137,6 +146,10 @@ export function transform(code: string, filename: string): MagicString {
                 && node.callee.name === useSignal
             ) {
                 skip--
+            }
+
+            if (node === scopeStack.at(-1)?.fn) {
+                scopeStack.pop()
             }
 
             parents.pop()
