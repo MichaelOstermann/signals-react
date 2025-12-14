@@ -1,7 +1,7 @@
 {
     "name": "@monstermann/signals-react",
     "type": "module",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "React integration for signals.",
     "author": "Michael Ostermann <michaelostermann@me.com>",
     "license": "MIT",
