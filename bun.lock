@@ -19,7 +19,7 @@
       "name": "@monstermann/signals-react",
       "version": "0.2.2",
       "dependencies": {
-        "@monstermann/signals": "^0.2.1",
+        "@monstermann/signals": "^0.2.2",
       },
       "devDependencies": {
         "@types/react": "^19.2.4",
@@ -270,15 +270,15 @@
 
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.29", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-uw6guiW/gcAGPDhLmd77/6lW8QLeiV5RUTsAX46Db6oLhGaVj4lhnPwb184s1bkc8kdVg/+h988dro8GRDpmYQ=="],
 
-    "@monstermann/dll": ["@monstermann/dll@0.0.2", "", {}, "sha512-9CsW/KTouyNJnRzyORLc54bogLqRMfkdVLzLDWPlN+2PfBgxB/TT5RniZKb3IduelBMZk/HgDnViiLXQPFSHfA=="],
+    "@monstermann/dll": ["@monstermann/dll@0.1.0", "", {}, "sha512-rEwwuhyUuyx323H5FrnZDJqlh27weJEQmz+D85jmn8AvWTO3Gi1WmCAoJqvWj54eqbntex0jGnxZnwdPjvcRZA=="],
 
-    "@monstermann/dsp": ["@monstermann/dsp@0.2.3", "", {}, "sha512-0Bs3d+pi9W3Z1hK0mBhsxsD7yPCN/brpXvjgkPR1pvMmb35sComUzt9JoEwO6ULhSVFYkULJuETTk47R7XEO8Q=="],
+    "@monstermann/dsp": ["@monstermann/dsp@0.3.0", "", {}, "sha512-hAQUNsPDoN3M1eiEDDwAxHdv11UfInd4lnvjLDpbQA/9vIktZ/Or8ownsUB7jNZY+bmXQMX8qebcJhNhtO7Lug=="],
 
     "@monstermann/eslint-config": ["@monstermann/eslint-config@0.6.0", "", { "dependencies": { "@eslint-community/eslint-plugin-eslint-comments": "^4.5.0", "@eslint-react/eslint-plugin": "^2.3.13", "@stylistic/eslint-plugin": "^5.6.1", "@typescript-eslint/eslint-plugin": "^8.49.0", "@typescript-eslint/parser": "^8.49.0", "eslint": "^9.39.2", "eslint-plugin-antfu": "^3.1.1", "eslint-plugin-format": "^1.1.0", "eslint-plugin-import-x": "^4.16.1", "eslint-plugin-jsdoc": "^61.5.0", "eslint-plugin-jsonc": "^2.21.0", "eslint-plugin-n": "^17.23.1", "eslint-plugin-perfectionist": "^4.15.1", "eslint-plugin-react-compiler": "^19.1.0-rc.2", "eslint-plugin-react-hooks": "^7.0.1", "eslint-plugin-react-refresh": "^0.4.24", "eslint-plugin-regexp": "^2.10.0", "eslint-plugin-tailwindcss": "^4.0.0-beta.0", "eslint-plugin-unicorn": "^62.0.0", "eslint-plugin-unused-imports": "^4.3.0", "globals": "^16.5.0", "jsonc-eslint-parser": "^2.4.2", "prettier": "^3.7.4" } }, "sha512-pB1RK9lNFOWqf64UHNcueEPrL3gSLd0aX018m87i2Ov4XAMooOpeucbQVHqZgfcDEqQaBTptctq7D86SJsmQNg=="],
 
     "@monstermann/meta": ["@monstermann/meta@0.2.0", "", {}, "sha512-TR65nXC3wVz/78ySorX27mvtQtYw7Q4T3jUH1VJD+Qbmin1V/K3+0OrC9zgU1h+KvqNb/M04vzGJP16PHsMPfQ=="],
 
-    "@monstermann/signals": ["@monstermann/signals@0.2.1", "", { "dependencies": { "@monstermann/dll": "^0.0.2", "@monstermann/dsp": "^0.2.3", "@monstermann/meta": "^0.2.0" } }, "sha512-GXJKw6vZ9QlAwjlYt+IlXila1VJltnf5Fe+2Y9fPiKIb+KdNsWOs94hB6ZU5C8Teuc5/+gBg0SQ6XAsM+CmRGA=="],
+    "@monstermann/signals": ["@monstermann/signals@0.2.2", "", { "dependencies": { "@monstermann/dll": "^0.1.0", "@monstermann/dsp": "^0.3.0", "@monstermann/meta": "^0.2.0" } }, "sha512-RBXvAO4qfbDodhws9ZwSVKyv/Ltbr6r+GCQhA4gdzYskSZQyJaWUD/s7emiFTaaOV/2Azohss0WK3nb/uZSzRg=="],
 
     "@monstermann/signals-react": ["@monstermann/signals-react@workspace:packages/signals-react"],
 
