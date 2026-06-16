@@ -192,6 +192,7 @@ function shouldWrap(node: JSXExpression | Expression): boolean {
     // foo.$bar()
     if (
         node.type === "CallExpression"
+        && node.arguments.length === 0
         && node.callee.type === "MemberExpression"
         && node.callee.property.type === "Identifier"
         && node.callee.property.name.startsWith("$")

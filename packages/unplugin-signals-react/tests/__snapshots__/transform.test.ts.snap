@@ -133,3 +133,11 @@ export const useHook = () => {
     return null
 }"
 `;
+
+exports[`transform > Should wrap call expressions with arguments in arrow function 1`] = `
+"import { useSignal } from "@monstermann/signals-react";
+export const useHook = () => {
+    const foo = useSignal(() => (bar.$baz({ a: 1 })))
+    return null
+}"
+`;

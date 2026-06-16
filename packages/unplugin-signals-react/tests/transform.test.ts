@@ -83,6 +83,15 @@ describe("transform", () => {
         `)
     })
 
+    test("Should wrap call expressions with arguments in arrow function", () => {
+        expectSnapshot(`
+            export const useHook = () => {
+                const foo = bar.$baz({ a: 1 })
+                return null
+            }
+        `)
+    })
+
     test("Should transform complex expressions", () => {
         expectSnapshot(`
             export const useHook = () => {
