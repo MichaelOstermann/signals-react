@@ -101,8 +101,7 @@ export function transform(code: string, filename: string): MagicString {
                 skip++
             }
 
-            // $foo()
-            // foo.$bar, foo.$bar()
+            // $foo(), foo.$bar(), foo.$bar.baz()
             else if (
                 !skip
                 && (
@@ -111,29 +110,18 @@ export function transform(code: string, filename: string): MagicString {
                         && node.arguments.length === 0
                         && node.callee.type === "Identifier"
                         && node.callee.name.startsWith("$"))
-                    // foo.$bar, foo.$bar()
+                    // foo.$bar(), foo.$bar.baz()
                     || (node.type === "MemberExpression"
                         && node.property.type === "Identifier"
-                        && node.property.name.startsWith("$"))
+                        && node.property.name.startsWith("$")
+                        && isInvoked(node, parents))
                 )
             ) {
-                // The nearest function
                 const scope = scopeStack.at(-1)
-                // Try to find eg. the nearest variable such as const foo = ...,
-                // we need to wrap the right side with const foo = useSignal(...)
-                const target = findParent(parents, node => node.type === "VariableDeclaration" || node.type === "JSXExpressionContainer" || node.type === "JSXSpreadAttribute")
-                if (scope && target?.type === "VariableDeclaration") {
-                    for (const declaration of target.declarations) {
-                        if (declaration.init) {
-                            scope.expressions.add(declaration.init)
-                        }
+                if (scope) {
+                    for (const expression of findWrapTargets(parents, node)) {
+                        scope.expressions.add(expression)
                     }
-                }
-                else if (scope && target?.type === "JSXExpressionContainer") {
-                    scope.expressions.add(target.expression)
-                }
-                else if (scope && target?.type === "JSXSpreadAttribute") {
-                    scope.expressions.add(target.argument)
                 }
             }
 
@@ -180,39 +168,82 @@ export function transform(code: string, filename: string): MagicString {
 }
 
 function shouldWrap(node: JSXExpression | Expression): boolean {
-    // $foo()
-    if (
-        node.type === "CallExpression"
-        && node.callee.type === "Identifier"
-        && node.callee.name.startsWith("$")
-    ) {
-        return false
-    }
-
-    // foo.$bar()
-    if (
-        node.type === "CallExpression"
-        && node.arguments.length === 0
-        && node.callee.type === "MemberExpression"
-        && node.callee.property.type === "Identifier"
-        && node.callee.property.name.startsWith("$")
-    ) {
-        return false
-    }
-
-    return true
+    // $foo(arg) needs to be wrapped with a function: useSignal(() => $foo(arg)),
+    // whereas $foo() does not: useSignal($foo).
+    return !(node.type === "CallExpression" && node.arguments.length === 0)
 }
 
-function findParent<T extends Node>(parents: Node[], predicate: (node: Node) => node is T): T | undefined
-function findParent(parents: Node[], predicate: (node: Node) => boolean): Node | undefined
-function findParent(parents: Node[], predicate: (node: Node) => boolean): Node | undefined {
+// Walks up from a signal read to the expression(s) that should be wrapped with
+// `useSignal(...)` - usually the nearest variable declaration or JSX expression.
+function findWrapTargets(parents: Node[], readNode: Node): (JSXExpression | Expression)[] {
+    let child: Node = readNode
     let i = parents.length
     while (i--) {
         const node = parents[i]!
-        if (node.type === "FunctionDeclaration") return undefined
-        if (node.type === "FunctionExpression") return undefined
-        if (node.type === "ArrowFunctionExpression") return undefined
-        if (predicate(node)) return node
+
+        // The read belongs to an inner function scope - nothing to wrap out here.
+        if (
+            node.type === "FunctionDeclaration"
+            || node.type === "FunctionExpression"
+            || node.type === "ArrowFunctionExpression"
+        ) {
+            return []
+        }
+
+        // The read sits inside a hook call - wrap the argument that contains it, not
+        // the enclosing declaration, so the hook call itself is never moved into
+        // `useSignal(() => (...))` (rules of hooks).
+        if (node.type === "CallExpression" && isHookCallee(node.callee)) {
+            const argument = node.arguments.find(argument => argument === child)
+            // A spread argument (`useFoo(...$foo())`) can't be wrapped in place.
+            return argument && argument.type !== "SpreadElement" ? [argument] : []
+        }
+
+        if (node.type === "VariableDeclaration") {
+            return node.declarations
+                .map(declaration => declaration.init)
+                .filter((init): init is Expression => init != null)
+        }
+
+        if (node.type === "JSXExpressionContainer") {
+            return node.expression.type === "JSXEmptyExpression" ? [] : [node.expression]
+        }
+
+        if (node.type === "JSXSpreadAttribute") {
+            return [node.argument]
+        }
+
+        child = node
     }
-    return undefined
+
+    return []
+}
+
+// foo.$bar()       -> true
+// foo.$bar.baz()   -> true
+// a.$b.c.d()       -> true
+// foo.$bar         -> false
+// foo.$bar.baz     -> false
+function isInvoked(memberNode: Node, parents: Node[]): boolean {
+    let current: Node = memberNode
+    for (let i = parents.length - 1; i >= 0; i--) {
+        const ancestor = parents[i]!
+        if (ancestor.type === "MemberExpression" && ancestor.object === current) {
+            current = ancestor
+            continue
+        }
+        return ancestor.type === "CallExpression" && ancestor.callee === current
+    }
+    return false
+}
+
+// `useFoo(...)` or `obj.useFoo(...)`
+function isHookCallee(callee: Node): boolean {
+    if (callee.type === "Identifier") {
+        return /^use[A-Z]/.test(callee.name)
+    }
+    if (callee.type === "MemberExpression" && callee.property.type === "Identifier") {
+        return /^use[A-Z]/.test(callee.property.name)
+    }
+    return false
 }

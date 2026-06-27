@@ -83,6 +83,15 @@ describe("transform", () => {
         `)
     })
 
+    test("Should transform nested call expressions 2", () => {
+        expectSnapshot(`
+            export const useHook = () => {
+                const foo = bar.$baz.qux()
+                return null
+            }
+        `)
+    })
+
     test("Should wrap call expressions with arguments in arrow function", () => {
         expectSnapshot(`
             export const useHook = () => {
@@ -161,6 +170,60 @@ describe("transform", () => {
             export const Component = () => {
                 const foo = $foo()
                 return null
+            }
+        `)
+    })
+
+    test("Should wrap a hook argument, not the hook call, for a direct read", () => {
+        expectSnapshot(`
+            export function useHook() {
+                const foo = useThing($foo())
+                return foo
+            }
+        `)
+    })
+
+    test("Should wrap a hook argument, not the hook call, for a nested read", () => {
+        expectSnapshot(`
+            export function useHook() {
+                const foo = useThing({ value: $foo() })
+                return foo
+            }
+        `)
+    })
+
+    test("Should still wrap the whole expression inside a non-hook call", () => {
+        expectSnapshot(`
+            export function useHook() {
+                const foo = util({ value: $foo() })
+                return foo
+            }
+        `)
+    })
+
+    test("Should not wrap a bare member reference", () => {
+        expectSnapshot(`
+            export function useHook() {
+                const foo = useThing({ $isOpen: bar.$baz })
+                return foo
+            }
+        `)
+    })
+
+    test("Should not wrap a deeper member access that is never called", () => {
+        expectSnapshot(`
+            export function useHook() {
+                const foo = bar.$baz.qux
+                return foo
+            }
+        `)
+    })
+
+    test("Should wrap an invoked member-access chain", () => {
+        expectSnapshot(`
+            export function useHook() {
+                const foo = a.$b.c.d()
+                return foo
             }
         `)
     })

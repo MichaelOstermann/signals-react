@@ -22,11 +22,33 @@ exports[`transform > Should ignore non-reads 1`] = `
 }"
 `;
 
+exports[`transform > Should not wrap a bare member reference 1`] = `
+"export function useHook() {
+    const foo = useThing({ $isOpen: bar.$baz })
+    return foo
+}"
+`;
+
+exports[`transform > Should not wrap a deeper member access that is never called 1`] = `
+"export function useHook() {
+    const foo = bar.$baz.qux
+    return foo
+}"
+`;
+
 exports[`transform > Should reuse import 1`] = `
 "import { useSignal as useS } from "@monstermann/signals-react"
 export const Component = () => {
     const foo = useS($foo)
     return null
+}"
+`;
+
+exports[`transform > Should still wrap the whole expression inside a non-hook call 1`] = `
+"import { useSignal } from "@monstermann/signals-react";
+export function useHook() {
+    const foo = useSignal(() => (util({ value: $foo() })))
+    return foo
 }"
 `;
 
@@ -131,6 +153,38 @@ exports[`transform > Should transform nested call expressions 1`] = `
 export const useHook = () => {
     const foo = useSignal(bar.$baz)
     return null
+}"
+`;
+
+exports[`transform > Should transform nested call expressions 2 1`] = `
+"import { useSignal } from "@monstermann/signals-react";
+export const useHook = () => {
+    const foo = useSignal(bar.$baz.qux)
+    return null
+}"
+`;
+
+exports[`transform > Should wrap a hook argument, not the hook call, for a direct read 1`] = `
+"import { useSignal } from "@monstermann/signals-react";
+export function useHook() {
+    const foo = useThing(useSignal($foo))
+    return foo
+}"
+`;
+
+exports[`transform > Should wrap a hook argument, not the hook call, for a nested read 1`] = `
+"import { useSignal } from "@monstermann/signals-react";
+export function useHook() {
+    const foo = useThing(useSignal(() => ({ value: $foo() })))
+    return foo
+}"
+`;
+
+exports[`transform > Should wrap an invoked member-access chain 1`] = `
+"import { useSignal } from "@monstermann/signals-react";
+export function useHook() {
+    const foo = useSignal(a.$b.c.d)
+    return foo
 }"
 `;
 
