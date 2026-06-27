@@ -18,7 +18,7 @@
     },
     "packages/signals-react": {
       "name": "@monstermann/signals-react",
-      "version": "0.3.1",
+      "version": "0.4.0",
       "dependencies": {
         "@monstermann/signals": "^0.3.0",
       },
@@ -31,7 +31,7 @@
     },
     "packages/unplugin-signals-react": {
       "name": "@monstermann/unplugin-signals-react",
-      "version": "0.3.1",
+      "version": "0.4.0",
       "dependencies": {
         "@monstermann/signals-react": "workspace:*",
         "magic-string": "^0.30.17",
